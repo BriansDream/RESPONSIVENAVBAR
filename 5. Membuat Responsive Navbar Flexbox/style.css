@@ -1,0 +1,293 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@100&family=Montserrat:wght@100;600;800;900&display=swap');
+
+/* Membuat Navbar yang responsif, nav bar nanti dibuat menggunakan html CSS dan javascripts */
+
+/* Membuatnya dengan konsep flexbox */
+
+/* 1. Reset semua margin dan padding menjadi 0 */
+/* agar punya kendali penuh terhadap style */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* 2. Anggap didalam navbar ada 2 komponen / item (Logo dan list) */
+/* Agar lebih mudah membuat Nav menjadi flexbox */
+/* agar smua itemnya berjejer ke kanan, tidak ke bawah */
+nav {
+    background-color: rgb(255, 85, 255);
+    display: flex;
+    /* Space Around, jarak ditiap sisi */
+    justify-content: space-around;
+
+    /* berikan padding agar tidak terlalu rapat atas-bawah 20px / kiri kanan 0  */
+    /* padding: 20px 0; */
+
+    /* 4. Berikan height agar tidak terlalu rapat */
+    height: 50px;
+    /* buat smua ditengah */
+    align-items: center;
+}
+
+/* buat UL juga jadi flex agar smua berjejer */
+nav ul {
+    display: flex;
+    list-style-type: none;
+    /* Membuat lebarnya renggang agar bisa diatur menggunakan space-between */
+    /* 40% dari parentnya */
+    width: 40%;
+    justify-content: space-between;
+
+}
+
+nav ul li a {
+    text-decoration: none;
+}
+
+nav .logo {
+    /* membuat fontnya renggang / berjarak */
+    letter-spacing: 3px;
+}
+
+/* 3. Membuat hover */
+
+nav ul li a:hover {
+    color: white;
+
+}
+
+/* 6. Membuat burger ICONnya  */
+/* Hamburger Menu */
+.menu-toggle {
+    /* 6.2 Atur pakai flex, agar jaraknya tidak perlu pakai pixe */
+    /* display: flex; */
+
+    /* 13. Jika di lebar normal displaynya buat none */
+    display: none;
+
+    /* default flex adalah mengatur ke kanan */
+    /* ubah arah flex yg defaultnya row menjadi column */
+    flex-direction: column;
+    /* kasih tinggi, agar ada jaraknya */
+    height: 20px;
+    /* distribusikan jaraknya */
+    justify-content: space-between;
+
+    /* 7.2 beri position togle relative karena harus berada satu dimensi dengan checkbox (out of flow) */
+    position: relative;
+}
+
+/* 7.2 Menu Checkbox */
+.menu-toggle input {
+    position: absolute;
+    /* atur lebar dan tingginya agar bentuk checkbox memenuhi parentnya */
+    width: 40px;
+    height: 28px;
+    /* buat opacity dan atur posisi checkboxnya agar rapih */
+    /* opacity 0 agar tidak kelihatan ketika di checklist */
+    /* itu yang menentukan kapan animasi dari humburgernya bekerja */
+    opacity: 0;
+    /* kasih geser ke kiri */
+    left: -6.1px;
+    top: -4.5px;
+    cursor: pointer;
+
+    /* 11. Membuat checkbox tersebut berada di depan */
+    /* Z index bergunaka untuk mengatur tumpukkan (out of flow) */
+    z-index: 2;
+}
+
+/* 6.1 buat garis ketiganya*/
+.menu-toggle span {
+    /* ubah display span menjadi block */
+    display: block;
+    width: 28px;
+    height: 3px;
+    background-color: white;
+    border-radius: 3px;
+
+    /* 9. Berikan Animasi / transisition pada span ()  */
+    transition: all 0.5s;
+}
+
+
+
+/* 8. Hamburger Menu Animation */
+/* Logikanya span ada 3, span yang 1 dibuat bergerak animasi 45 deg ke bawah */
+/* span 2 animasi perlahan hilang */
+/* span 3 kebalikan dari span yang pertama rotasi 45deg tapi kebalikannya*/
+/* Sehingga nanti akan membuat tanda X */
+/* Caranya, kita akan gunakan teknik CSS yang namanya siblings */
+/* Gunakan nth-child agar dapat mengambil span tanpa memanggil class */
+/* cari span yang ada didalam menu toggle yang dia anak keberapa? */
+.menu-toggle span:nth-child(2) {
+
+    /*8.2 lanjutan, memindahkan porosnya */
+    /* memindahkan ada di atas kiri */
+    /* sumbu x 0, sumbu y 0 */
+    transform-origin: 0 0;
+
+}
+
+/* 8.3 sekarang kita butuh yang terakhir, copy saja 8.2 */
+
+.menu-toggle span:nth-child(4) {
+
+    /*8.3 lanjutan, memindahkan porosnya */
+    /* kita mau ambil kanan bawah */
+    /* sumbu x 0, sumbu y 100% */
+    transform-origin: 0 100%;
+
+}
+
+/* Men-target, click checkbox span yang pertama berubah warna menjadi merah */
+/* ketika input yang ada didalam menu toggle ini di check */
+/* cari CSS yang merupakan siblings / saudara kandung yang merupakan span, yang dia anak ke 2 */
+.menu-toggle input:checked~span:nth-child(2) {
+    /* Lakukan transformasi, membuat garis pertama ini rotasi 45 deg kebawah  */
+    /* jadi ketika di click berubah sudutnya 45deg */
+    /* 8.5 mengubah agar tanda X'nya pas (translate) -1 -1*/
+    transform: rotate(45deg) translate(-1px, -1px);
+
+
+
+    /* 8.2 Defaultnya CSS transformation, jika sebuah elemen diputar maka porosnya akan berada ditengah*/
+    /* kita ingin porosnya pindah ke ujung, supaya ketika diputar dia memutar tidak dari tengah tetapi dari ujung, supaya gampang membentuk x'nya */
+
+
+    /* 12. Ganti background colornya menjadi white agar lebih keren */
+    background-color: white;
+
+
+}
+
+/* 8.4 lanjutan */
+/* ketika inputnya di check, maka kita ganti span yang ke 4 */
+.menu-toggle input:checked~span:nth-child(4) {
+    /* agar rotasinya ke atas, itu sebabnya diberikan nilai minus */
+    /* 8.5 mengubah agar tanda X'nya pas (translate) -1, 0*/
+    transform: rotate(-45deg) translate(-1px, 0);
+
+    /* 12. Ganti background colornya menjadi white agar lebih keren */
+    background-color: white;
+
+}
+
+/* 10. Menghilangkan span tengah */
+/* yang tengah tidak perlu transform origin, karena tidak kita putar */
+.menu-toggle input:checked~span:nth-child(3) {
+    /* kita perkecil sampai hilang */
+    transform: scale(0);
+    /* 12. yang ketiga cukup kasih opacity biar menghilang */
+    opacity: 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Resposive Breakpoint */
+
+/* 5. Membuat jarak di link tidak terlalu dempet ketika kita masuk ke mode tablet  */
+/* jadi kita buat 3 breakpoint */
+
+/* 5.1 ukuran besar / laptop / pc */
+
+
+
+/* 5.3 Ukuran lebar layar tablet / smartphone landscape */
+/* ketika medianya layar dan lebar maximalnya adalah 768, mau ngapain?  */
+@media screen and (max-width :768px) {
+    nav ul {
+        width: 50%;
+    }
+
+    /* 5.2 Ukuran lebar layar mobile */
+    @media screen and (max-width :576px) {
+        /* nav ul {
+            display: none;
+        } */
+
+        /* 13, ketika mengecil berikan display flex */
+        .menu-toggle {
+            display: flex;
+        }
+
+        /* 14. Bagaimana cara memunculkan menu'nya kesamping */
+        /* ketika ukuran mobile ULnya pindahkan posisinya */
+        nav ul {
+            position: absolute;
+            /* mepet kanan */
+            right: 0;
+            /* supaya berjejer ke bawah kasih flex direction column */
+            flex-direction: column;
+
+            /*14.1 Membuat agar ul tersebut penuh sampai bawah */
+            /* agar menu tersebut terlihat sesuai dengan tinggi layar yang kita lihat */
+            height: 100vh;
+            top: 0;
+
+            /* 15. Membuat menu UL rapih berada di tengah */
+            align-items: center;
+
+            /* 16. agar tulisan menu pada ulnya spacenya atas bawah sama */
+            justify-content: space-evenly;
+
+            /* 17. agar tidak berada diatas, berikan Z index minus, agar dia berada dibalik nav bar */
+            z-index: -1;
+            background-color: aqua;
+            /* 18. Buat widthnya agar lebih lebar */
+            width: 80%;
+
+            /* 19. Membuat agar ULnya pertama kali dibuka ngumpet */
+            transform: translateX(100%);
+
+            /* 23. sebelum itu kasih transisi 1 detik biar keren */
+            transition: all 1s;
+
+            /* 27.2 */
+            opacity: 0;
+
+        }
+    }
+
+    /* 20. cara menghilangkan scroll kanan  */
+    /* Kita buat bodynya fix, tidak boleh ada scroll kanan */
+    /* jadi jika ada yang bablas, maka umpetin*/
+    body {
+        overflow-x: hidden;
+    }
+
+    /* 21. Next, Gunakan sebuah class */
+    /* Jika UL Punya class slide */
+    /* kembalikan lagi translatenya menjadi 0 */
+    nav ul.slide {
+        /* 27 berikan opacity agar lebih keren lagi  */
+        opacity: 1;
+        transform: translateX(0)
+    }
+
+    /* 22. Kita akan lakukan hal nomor 21 menggunakan javascript */
+    /* ketika ul di click, tambahkan class slide, kalau di click sekali lagi hilangkan class slidenya */
+
+
+    /* 24. Sekarang kita buat javascript ke index.html */
